@@ -1,0 +1,8 @@
+{
+  "name": "form-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:siriusjunior/form-app.git",
+  "author": "siriusjunior <topdownreading@gmail.com>",
+  "license": "MIT"
+}
