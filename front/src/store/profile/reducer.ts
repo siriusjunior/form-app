@@ -9,6 +9,7 @@ const init: Profile = {
   gender: "",
 };
 
+// payloadがactionにあるPartial<Profile>(Cf.29)
 const profileReducer = reducerWithInitialState(init).case(
   profileActions.setProfile,
   (state, payload) => ({
