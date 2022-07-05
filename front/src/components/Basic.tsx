@@ -63,6 +63,16 @@ const Basic = () => {
           />
         </RadioGroup>
       </FormControl>
+      <TextField
+        fullWidth
+        className={classes.formField}
+        label={PROFILE.BIRTHDAY}
+        type="date"
+        InputLabelProps={{ shrink: true }}
+        value={profile.birthday}
+        // 'birthday' exists in type 'Partial<Profile>',cfL23
+        onChange={(e) => handleChange({ birthday: e.target.value })}
+      />
     </>
   );
 };
