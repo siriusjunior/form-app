@@ -6,6 +6,7 @@ import { RootState } from "../domain/entity/rootState";
 import { Address as IAddress } from "../domain/entity/address"; // InterfaceAddress(慣習)
 import profileActions from "../store/profile/actions";
 import { isPostalcode } from "../domain/services/address";
+import { searchAddressFromPostalcode } from "../store/profile/effects";
 import useStyles from "./styles";
 
 const Address = () => {
@@ -19,6 +20,7 @@ const Address = () => {
     if (!isPostalcode(code)) return;
     //'postalcode' is assignable to parameter of type 'Partial<Address>'. Cf.actions.ts
     dispatch(profileActions.setAddress({ postalcode: code }));
+    dispatch(searchAddressFromPostalcode(code));
   };
 
   return (

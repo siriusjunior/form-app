@@ -8,6 +8,10 @@ const actionCreator = actionCreatorFactory();
 const profileActions = {
   setProfile: actionCreator<Partial<Profile>>("SET_PROFILE"),
   setAddress: actionCreator<Partial<Address>>("SET_ADDRESS"),
+  // ⾮同期処理のstart,done,failのaction生成(payloadの型)
+  searchAddress: actionCreator.async<{}, Partial<Address>, {}>(
+    "SEARCH_ADDRESS"
+  ),
 };
 
 export default profileActions;
