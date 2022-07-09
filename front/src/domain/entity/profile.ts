@@ -1,4 +1,5 @@
 import { Address } from "./address";
+import { Career } from "./career";
 import { Gender } from "./gender";
 
 export type Profile = {
@@ -7,4 +8,5 @@ export type Profile = {
   birthday: string;
   gender: Gender;
   address: Address;
+  careers: Career[];
 };
