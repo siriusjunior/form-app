@@ -1,4 +1,7 @@
 import React, { Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../domain/entity/rootState";
+import { PROFILE } from "../domain/services/profile";
 import {
   TextField,
   Grid,
@@ -6,9 +9,6 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import { PROFILE } from "../domain/services/profile";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../domain/entity/rootState";
 import useStyles from "./styles";
 
 import { Career as ICareer } from "../domain/entity/career";

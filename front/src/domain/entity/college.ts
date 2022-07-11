@@ -6,3 +6,5 @@ export type College = {
   faculty: string;
   department: string;
 };
+
+export type Colleges = { search: string };
