@@ -13,13 +13,14 @@ const profileActions = {
   searchAddress: actionCreator.async<{}, Partial<Address>, {}>(
     "SEARCH_ADDRESS"
   ),
+  // 初期値の職歴追加のためpayloadなし
+  addCareer: actionCreator<{}>("ADD_CAREER"),
+  //careersを形成する(career)を形成(Cf.profile.ts)
   setCareer: actionCreator<{ career: Partial<Career>; index: number }>(
     "SET_CAREER"
   ),
-  deleteCareer: actionCreator<number>("DELETE_CAREER"),
   // 任意の職歴を削除するのでpayloadはnumber
-  addCareer: actionCreator<{}>("ADD_CAREER"),
-  // 初期値の職歴追加のためpayloadなし
+  deleteCareer: actionCreator<number>("DELETE_CAREER"),
 };
 
 export default profileActions;
