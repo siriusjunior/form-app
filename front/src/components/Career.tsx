@@ -13,20 +13,26 @@ import useStyles from "./styles";
 
 import { Career as ICareer } from "../domain/entity/career";
 import profileActions from "../store/profile/actions";
+import { exitEmptyCareers } from "../domain/services/career";
 
 const Career = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const careers = useSelector((state: RootState) => state.profile.careers);
+  const isUnableToAddCareer = exitEmptyCareers(careers);
 
-  const handleAddCareer = () => {
-    dispatch(profileActions.addCareer({}));
+  const handleDeleteCareer = (i: number) => {
+    dispatch(profileActions.deleteCareer(i));
   };
 
   // memberに引数の変数として各々の項目を受ける(iごとのaction中のcareer)
   // career中にdispatch(actionsのPartial<Career>に適合)
   const handleChange = (member: Partial<ICareer>, i: number) => {
     dispatch(profileActions.setCareer({ career: member, index: i }));
+  };
+
+  const handleAddCareer = () => {
+    dispatch(profileActions.addCareer({}));
   };
 
   return (
@@ -84,6 +90,15 @@ const Career = () => {
               </Grid>
             </Grid>
           </div>
+          <Button
+            className={classes.careerSpan}
+            onClick={() => handleDeleteCareer(i)}
+            fullWidth
+            variant="outlined"
+            color="secondary"
+          >
+            職歴{i + 1}を削除
+          </Button>
         </Fragment>
       ))}
       <Button
@@ -91,6 +106,7 @@ const Career = () => {
         onClick={handleAddCareer}
         fullWidth
         variant="outlined"
+        disabled={isUnableToAddCareer}
       >
         職歴を追加
       </Button>
