@@ -15,6 +15,7 @@ const init: Profile = {
     restAddress: "",
   },
   careers: [],
+  college: { name: "", faculty: "", department: "" },
 };
 
 const initCareer: Career = {
@@ -51,6 +52,10 @@ const profileReducer = reducerWithInitialState(init)
   .case(profileActions.deleteCareer, (state, payload) => ({
     ...state,
     careers: state.careers.filter((_, i) => i !== payload),
+  }))
+  .case(profileActions.setCollege, (state, payload) => ({
+    ...state,
+    college: { ...state.college, ...payload },
   }));
 
 export default profileReducer;

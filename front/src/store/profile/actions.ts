@@ -2,6 +2,7 @@ import actionCreatorFactory from "typescript-fsa";
 import { Profile } from "../../domain/entity/profile";
 import { Address } from "../../domain/entity/address";
 import { Career } from "../../domain/entity/career";
+import { College } from "../../domain/entity/college";
 
 const actionCreator = actionCreatorFactory();
 
@@ -21,6 +22,7 @@ const profileActions = {
   ),
   // 任意の職歴を削除するのでpayloadはnumber
   deleteCareer: actionCreator<number>("DELETE_CAREER"),
+  setCollege: actionCreator<Partial<College>>("SET_COLLEGE"),
 };
 
 export default profileActions;
