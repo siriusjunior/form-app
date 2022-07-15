@@ -12,7 +12,7 @@ const collegesReducer = reducerWithInitialState(init)
   }))
   .case(collegesActions.searchCollege.done, (state, payload) => ({
     ...state,
-    // effects.tsのdispatchで定義
+    // effects.tsのdispatchでpayload型定義
     result: payload.result,
   }));
 
