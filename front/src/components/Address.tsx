@@ -8,20 +8,37 @@ import profileActions from "../store/profile/actions";
 import { isPostalcode } from "../domain/services/address";
 import { searchAddressFromPostalcode } from "../store/profile/effects";
 import useStyles from "./styles";
+import { Profile } from "../domain/entity/profile";
+import { calculateValidation } from "../domain/services/validation";
+import validationActions from "../store/validation/actions";
 
 const Address = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile); // stateを管理する変数
   const validation = useSelector((state: RootState) => state.validation);
   const classes = useStyles();
+
   const handleAddressChange = (member: Partial<IAddress>) => {
     dispatch(profileActions.setAddress(member));
+    // memberは住所情報でProfileの一部分である点に注意
+    recalculateValidation({ address: { ...profile.address, ...member } });
   };
+
   const handlePostalcodeChange = (code: string) => {
     if (!isPostalcode(code)) return;
     //'postalcode' is assignable to parameter of type 'Partial<Address>'. Cf.actions.ts
     dispatch(profileActions.setAddress({ postalcode: code }));
     dispatch(searchAddressFromPostalcode(code));
+    recalculateValidation({
+      address: { ...profile.address, postalcode: code },
+    });
+  };
+
+  const recalculateValidation = (member: Partial<Profile>) => {
+    if (!validation.isStartValidation) return;
+    const newProfile = { ...profile, ...member };
+    const message = calculateValidation(newProfile);
+    dispatch(validationActions.setValidation(message));
   };
 
   return (

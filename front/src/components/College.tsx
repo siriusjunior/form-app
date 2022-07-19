@@ -17,6 +17,8 @@ import { PROFILE } from "../domain/services/profile";
 import { searchColleges } from "../store/colleges/effects";
 import { College as ICollege } from "../domain/entity/college";
 import profileActions from "../store/profile/actions";
+import { calculateValidation } from "../domain/services/validation";
+import validationActions from "../store/validation/actions";
 
 const College = () => {
   const classes = useStyles();
@@ -35,6 +37,7 @@ const College = () => {
 
   const handleCollegeChange = (member: Partial<ICollege>) => {
     dispatch(profileActions.setCollege(member));
+    recalculateValidation(member);
   };
 
   // profile内のcollege項目・大学検索のsearch・検索結果resultの初期化
@@ -42,6 +45,13 @@ const College = () => {
     handleCollegeChange({ name: "", faculty: "", department: "" });
     dispatch(collegesActions.setSearchWord(""));
     dispatch(collegesActions.searchCollege.done({ result: [], params: {} }));
+  };
+
+  const recalculateValidation = (member: Partial<ICollege>) => {
+    if (!validation.isStartValidation) return;
+    const newProfile = { ...profile, college: { ...profile.college, member } };
+    const message = calculateValidation(newProfile);
+    dispatch(validationActions.setValidation(message));
   };
 
   // 検索結果の候補のうちprofile.college.nameに合致する大学情報

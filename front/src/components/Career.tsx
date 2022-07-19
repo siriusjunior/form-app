@@ -14,11 +14,14 @@ import useStyles from "./styles";
 import { Career as ICareer } from "../domain/entity/career";
 import profileActions from "../store/profile/actions";
 import { exitEmptyCareers } from "../domain/services/career";
+import { calculateValidation } from "../domain/services/validation";
+import validationActions from "../store/validation/actions";
 
 const Career = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const careers = useSelector((state: RootState) => state.profile.careers);
+  const profile = useSelector((state: RootState) => state.profile);
   const validation = useSelector((state: RootState) => state.validation);
   const isUnableToAddCareer = exitEmptyCareers(careers);
 
@@ -27,13 +30,27 @@ const Career = () => {
   };
 
   // memberに引数の変数として各々の項目を受ける(iごとのaction中のcareer)
-  // career中にdispatch(actionsのPartial<Career>に適合)
+  // 各careerの変更とdispatch(actionsのPartial<Career>に適合)
   const handleChange = (member: Partial<ICareer>, i: number) => {
     dispatch(profileActions.setCareer({ career: member, index: i }));
+    recalculateValidation(member, i);
   };
 
   const handleAddCareer = () => {
     dispatch(profileActions.addCareer({}));
+  };
+
+  const recalculateValidation = (member: Partial<ICareer>, i: number) => {
+    if (!validation.isStartValidation) return;
+    const newProfile = {
+      ...profile,
+      // profile中のcareer項目を_iとiを参照しstate更新
+      careers: profile.careers.map((c, _i) =>
+        _i === i ? { ...c, ...member } : c
+      ),
+    };
+    const message = calculateValidation(newProfile);
+    dispatch(validationActions.setValidation(message));
   };
 
   return (
