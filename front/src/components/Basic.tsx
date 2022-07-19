@@ -7,6 +7,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  FormHelperText,
 } from "@material-ui/core";
 import useStyles from "./styles";
 import { RootState } from "../domain/entity/rootState";
@@ -19,6 +20,7 @@ const Basic = () => {
   const dispatch = useDispatch();
   // ここでstateを扱う(Profile型と一致)
   const profile = useSelector((state: RootState) => state.profile);
+  const validation = useSelector((state: RootState) => state.validation);
   const classes = useStyles();
   const handleChange = (member: Partial<Profile>) => {
     dispatch(profileActions.setProfile(member));
@@ -28,15 +30,20 @@ const Basic = () => {
     <>
       <TextField
         fullWidth
+        label={PROFILE.NAME}
+        required
+        error={!!validation.message.name}
+        helperText={validation.message.name}
         className={classes.formField}
         value={profile.name}
-        label={PROFILE.NAME}
         // 'name' exists in type 'Partial<Profile>',cfL23
         onChange={(e) => handleChange({ name: e.target.value })}
       />
       <TextField
         fullWidth
         multiline
+        error={!!validation.message.description}
+        helperText={validation.message.description}
         className={classes.formField}
         rows={5}
         label={PROFILE.DESCRIPTION}
@@ -44,10 +51,13 @@ const Basic = () => {
         // 'description' exists in type 'Partial<Profile>',cfL23
         onChange={(e) => handleChange({ description: e.target.value })}
       />
-      <FormControl className={classes.formField}>
+      <FormControl
+        error={!!validation.message.gender}
+        required
+        className={classes.formField}
+      >
         <FormLabel>{PROFILE.GENDER}</FormLabel>
         <RadioGroup
-          value={profile.gender}
           // 'gender' exists in type 'Partial<Profile>',cfL23
           onChange={(e) => handleChange({ gender: e.target.value as Gender })}
         >
@@ -62,9 +72,12 @@ const Basic = () => {
             control={<Radio color="primary" />}
           />
         </RadioGroup>
+        <FormHelperText>{validation.message.gender}</FormHelperText>
       </FormControl>
       <TextField
         fullWidth
+        required
+        error={!!validation.message.birthday}
         className={classes.formField}
         label={PROFILE.BIRTHDAY}
         type="date"
