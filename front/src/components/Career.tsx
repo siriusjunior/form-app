@@ -19,6 +19,7 @@ const Career = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const careers = useSelector((state: RootState) => state.profile.careers);
+  const validation = useSelector((state: RootState) => state.validation);
   const isUnableToAddCareer = exitEmptyCareers(careers);
 
   const handleDeleteCareer = (i: number) => {
@@ -46,6 +47,8 @@ const Career = () => {
           <TextField
             className={classes.formField}
             fullWidth
+            error={!!validation.message.careers[i]?.company}
+            helperText={validation.message.careers[i]?.company}
             label={PROFILE.CAREERS.COMPANY}
             value={c.company}
             onChange={(e) => handleChange({ company: e.target.value }, i)}
@@ -53,6 +56,8 @@ const Career = () => {
           <TextField
             className={classes.formField}
             fullWidth
+            error={!!validation.message.careers[i]?.position}
+            helperText={validation.message.careers[i]?.position}
             label={PROFILE.CAREERS.POSITION}
             value={c.position}
             onChange={(e) => handleChange({ position: e.target.value }, i)}
@@ -70,6 +75,8 @@ const Career = () => {
                 <TextField
                   fullWidth
                   type="month"
+                  error={!!validation.message.careers[i]?.startAt}
+                  helperText={validation.message.careers[i]?.startAt}
                   InputLabelProps={{ shrink: true }}
                   value={c.startAt}
                   onChange={(e) => handleChange({ startAt: e.target.value }, i)}
@@ -83,6 +90,8 @@ const Career = () => {
                 <TextField
                   fullWidth
                   type="month"
+                  error={!!validation.message.careers[i]?.endAt}
+                  helperText={validation.message.careers[i]?.endAt}
                   InputLabelProps={{ shrink: true }}
                   value={c.endAt}
                   onChange={(e) => handleChange({ endAt: e.target.value }, i)}

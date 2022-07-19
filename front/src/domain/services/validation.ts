@@ -25,20 +25,33 @@ export const calculateValidation = (profile: Profile) => {
         PROFILE.ADDRESS.RESTADDRESS
       ),
     },
-    college: { faculty: "" },
-    careers: [],
+    college: { faculty: facultyValidation(profile.college) },
+    careers: careerValidation(profile.careers),
   };
   return message;
 };
 
+// 必須項目
 const emptyValidation = (target: string, col: string) =>
   isEmpty(target) ? `${col}を入力してください。` : "";
-
+// 文字列制限
 const lengthValidation = (target: string, maxLen: number) =>
   isTooLong(target, maxLen) ? `${maxLen}文字以下で入力してください。` : "";
 
+// mapで配列をつくり職歴項目ごとのバリデーションに対応
+const careerValidation = (careers: Career[]) =>
+  careers.map((c) => ({
+    company: emptyValidation(c.company, PROFILE.CAREERS.COMPANY),
+    position: emptyValidation(c.company, PROFILE.CAREERS.POSITION),
+    startAt: emptyValidation(c.startAt, PROFILE.CAREERS.START_AT),
+    endAt: emptyValidation(c.endAt, PROFILE.CAREERS.END_AT),
+  }));
+
+// 大学選択時の学部選択要求
+const facultyValidation = (college: College) =>
+  college.name && !college.faculty
+    ? `${PROFILE.COLLEGE.FACULTY}を入力してください。`
+    : "";
+
 const isEmpty = (str: string) => !str.trim();
-
 const isTooLong = (str: string, maxLen: number) => str.trim().length >= maxLen;
-
-// const isTooLong;

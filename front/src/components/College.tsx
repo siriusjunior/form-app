@@ -10,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from "@material-ui/core";
 import useStyles from "./styles";
 import { PROFILE } from "../domain/services/profile";
@@ -22,6 +23,7 @@ const College = () => {
   const dispatch = useDispatch();
   const colleges = useSelector((state: RootState) => state.colleges);
   const profile = useSelector((state: RootState) => state.profile);
+  const validation = useSelector((state: RootState) => state.validation);
 
   const handleChange = (name: string) => {
     dispatch(collegesActions.setSearchWord(name));
@@ -96,7 +98,11 @@ const College = () => {
             value={profile.college.name}
             disabled
           />
-          <FormControl fullWidth className={classes.formField}>
+          <FormControl
+            error={!!validation.message.college.faculty}
+            fullWidth
+            className={classes.formField}
+          >
             <InputLabel>{PROFILE.COLLEGE.FACULTY}</InputLabel>
             <Select
               value={profile.college.faculty}
@@ -113,6 +119,9 @@ const College = () => {
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>
+              {validation.message.college.faculty}
+            </FormHelperText>
           </FormControl>
           {currentFaculty?.department.length > 0 && (
             <FormControl fullWidth className={classes.formField}>
