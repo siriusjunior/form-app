@@ -78,6 +78,7 @@ const Basic = () => {
         fullWidth
         required
         error={!!validation.message.birthday}
+        helperText={validation.message.birthday}
         className={classes.formField}
         label={PROFILE.BIRTHDAY}
         type="date"

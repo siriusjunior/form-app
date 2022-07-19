@@ -12,6 +12,7 @@ import useStyles from "./styles";
 const Address = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile); // stateを管理する変数
+  const validation = useSelector((state: RootState) => state.validation);
   const classes = useStyles();
   const handleAddressChange = (member: Partial<IAddress>) => {
     dispatch(profileActions.setAddress(member));
@@ -27,6 +28,9 @@ const Address = () => {
     <>
       <TextField
         fullWidth
+        required
+        error={!!validation.message.address.postalcode}
+        helperText={validation.message.address.postalcode}
         className={classes.formField}
         label={PROFILE.ADDRESS.POSTALCODE}
         value={profile.address.postalcode}
@@ -35,6 +39,9 @@ const Address = () => {
       />
       <TextField
         fullWidth
+        required
+        error={!!validation.message.address.prefecture}
+        helperText={validation.message.address.prefecture}
         className={classes.formField}
         label={PROFILE.ADDRESS.PREFECTURE}
         value={profile.address.prefecture}
@@ -42,6 +49,9 @@ const Address = () => {
       />
       <TextField
         fullWidth
+        required
+        error={!!validation.message.address.city}
+        helperText={validation.message.address.city}
         className={classes.formField}
         label={PROFILE.ADDRESS.CITY}
         value={profile.address.city}
@@ -50,6 +60,8 @@ const Address = () => {
       <TextField
         fullWidth
         className={classes.formField}
+        error={!!validation.message.address.restAddress}
+        helperText={validation.message.address.restAddress}
         label={PROFILE.ADDRESS.RESTADDRESS}
         value={profile.address.restAddress}
         onChange={(e) => handleAddressChange({ restAddress: e.target.value })}
