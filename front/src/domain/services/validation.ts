@@ -30,6 +30,21 @@ export const calculateValidation = (profile: Profile) => {
   };
   return message;
 };
+// calculateValidation
+
+// バリデーションメッセージの有無チェック
+export const isValid = (message: Validation) => {
+  const flattenValues = Object.values(message)
+    .map(extractValues)
+    .flat() as string[];
+  // 配列の各項目にエラーメッセージがないか
+  return flattenValues.every((fv) => !fv);
+};
+// 再帰的にObjectを配列に,extractValuesへ配列化
+const extractValues = (obj: any): any[] | string => {
+  if (typeof obj === "string") return obj;
+  return Object.values(obj).map(extractValues);
+};
 
 // 必須項目
 const emptyValidation = (target: string, col: string) =>
@@ -37,6 +52,8 @@ const emptyValidation = (target: string, col: string) =>
 // 文字列制限
 const lengthValidation = (target: string, maxLen: number) =>
   isTooLong(target, maxLen) ? `${maxLen}文字以下で入力してください。` : "";
+const isEmpty = (str: string) => !str.trim();
+const isTooLong = (str: string, maxLen: number) => str.trim().length >= maxLen;
 
 // mapで配列をつくり職歴項目ごとのバリデーションに対応
 const careerValidation = (careers: Career[]) =>
@@ -52,6 +69,3 @@ const facultyValidation = (college: College) =>
   college.name && !college.faculty
     ? `${PROFILE.COLLEGE.FACULTY}を入力してください。`
     : "";
-
-const isEmpty = (str: string) => !str.trim();
-const isTooLong = (str: string, maxLen: number) => str.trim().length >= maxLen;
